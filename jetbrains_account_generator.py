@@ -74,7 +74,7 @@ class JetAcc:
         elem = self.driver.find_element(By.XPATH, '//span[@class="text-bold text-break"]')
         self.driver.get(elem.text)
         # in jetbrains
-        time.sleep(2)
+        time.sleep(8)
 
         self.driver.find_element(By.NAME, "firstName").send_keys(self.person['first name'])
         self.driver.find_element(By.NAME, "lastName").send_keys(self.person['last name'])
@@ -82,12 +82,10 @@ class JetAcc:
         self.driver.find_element(By.NAME, "password").send_keys(self.person['password'])
         self.driver.find_element(By.NAME, "pass2").send_keys(self.person['password'])
         self.driver.find_element(By.NAME, "privacy").click()
-        time.sleep(3)
         elem = WebDriverWait(self.driver, 6).until(
             EC.presence_of_element_located(
                 (By.XPATH, '//button[@class="pwd-submit-btn btn btn-primary btn-lg"]')))
         elem.click()
-    time.sleep(3)
 
     def write_jetbrains_data(self):
         with open(self.gen.filename, mode='a', encoding='utf-8', newline='') as f:
@@ -104,13 +102,17 @@ class JetAcc:
         self.driver.maximize_window()
 
         time.sleep(5)
+
         self.start_register_jetbrains()
         time.sleep(15)
         self.protonmail_login()
         self.continue_registration()
         self.write_jetbrains_data()
+        self.driver.close()
 
 
 if __name__ == '__main__':
     jet_acc = JetAcc()
     jet_acc.generate_account()
+
+    input("Done! Press enter to exit...")
